@@ -8,9 +8,16 @@ const Item = sequelize.define("items", {
   description: Sequelize.TEXT,
 });
 
+const User = sequelize.define("users", {
+  name: Sequelize.STRING,
+  email: Sequelize.STRING,
+  password: Sequelize.STRING,
+})
+
 module.exports = {
   db: sequelize,
   Item,
+  User,
 };
 
 

@@ -27,5 +27,12 @@ router.put("/items/:id/update", async (req, res, next) => {
     next(error)
   }
 });
+router.get("/:id", async (req, res) => {
+  res.json(await Item.findByPk(req.params.id))
+});
+
+
+
+
 
 module.exports = router;
