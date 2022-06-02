@@ -17,14 +17,6 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res) => {
   res.json(await User.findByPk(req.params.id))
 });
-// router.delete('/user/:id', async (req, res) => {
-// 	await User.destroy(req.body, {
-// 		where : {id : req.params.id},
-		
-
-// 	});
-// 	res.send('deleted!!')
-// })
 
 
 

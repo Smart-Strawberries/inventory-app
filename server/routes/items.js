@@ -12,31 +12,10 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
-// Post
-router.post('/items/:id',async (req, res) => {
-  await Item.create(req.body, {
-      where: {id: req.params.id}
-  });
-  res.send('Item created!');
+
+router.get("/:id", async (req, res) => {
+  res.json(await Item.findByPk(req.params.id))
 });
-
-
-
-// Update 
-router.put('/items/:id',async (req, res) => {
-  await Item.update(req.body, {
-      where: {id: req.params.id}
-  });
-  res.send('Updated Items!');
-});
-
- // delete
- router.delete('/items/:id', async(req,res)=>{
-  await Item.destroy({
-      where: {id: req.params.id}
-  });
-  res.send('Deleted!')
-})
 
 
 
