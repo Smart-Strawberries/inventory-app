@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 
 export function ItemForm(props){
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState('');
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState('')
