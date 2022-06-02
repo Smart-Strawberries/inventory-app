@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export const SingleItem = ({ singleItem, setSingleItem }) => {
+const SingleItem = ({ singleItem, setSingleItem }) => {
     return <>
     <h4>{singleItem.category}</h4>
     <h1>{singleItem.title}</h1>
@@ -11,3 +11,5 @@ export const SingleItem = ({ singleItem, setSingleItem }) => {
     <button onClick={() => {setSingleItem(0)}}>Back to All</button>
     </>
 }
+
+export default SingleItem
