@@ -12,6 +12,12 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
+
+router.get("/:id", async (req, res) => {
+    res.json(await Item.findByPk(req.params.id))
+});
+
+
 // Post
 router.post('/items/:id',async (req, res) => {
   await Item.create(req.body, {
