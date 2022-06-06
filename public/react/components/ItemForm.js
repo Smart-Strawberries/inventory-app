@@ -1,73 +1,36 @@
-import React, { useState} from 'react';
+import React, {useState} from 'react';
+import apiURL from '../api';
 
-export function ItemForm(props){
-  const [quantity, setQuantity] = useState('');
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
-  const [price, setPrice] = useState('')
-  const [description, setDescription] = useState('');
+export const ItemForm = ({cancelFunction, item, handleSubmit, setItem, method}) => {
+  const {
+    name,
+    price,
+    category,
+    description,
+    image
+  } = item;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await fetch('/items/:id/update', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        quantity: quantity,
-        name: name,
-        category: category,
-        price: price,
-        description: description,
-      }),
-    }).then((res) => {
-      res.json();
-      props.setItemFormClicked(false)
-    })
-  }
+  const formName = method === 'add' ? 'Add Item' : 'Edit Item';
 
-  return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <input 
-          type='text'
-          placeholder='name'
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          required
-        />
-        <input 
-          type='text'
-          placeholder='quantity'
-          onChange={(e) => setQuantity(e.target.value)}
-          value={quantity}
-          required
-        />
-        <input 
-          type='text'
-          placeholder='category'
-          onChange={(e) => setCategory(e.target.value)}
-          value={category}
-          required
-        />
-        <input 
-          type='text'
-          placeholder='description'
-          onChange={(e) => setDescription(e.target.value)}
-          value={description}
-          required
-        />
-        <input 
-          type='text'
-          placeholder='price'
-          onChange={(e) => setPrice(e.target.value)}
-          value={price}
-          required
-        />
-        <button type='submit'>Add/Update item!</button>
-      </form>
-    </>
-  )
+
+  return <div>
+    <h3>{formName}</h3>
+    <form  onSubmit={handleSubmit}>
+      <label>name:</label>
+      <input type="text" name="name" value={name} onChange={(ev) => setItem({...item, name: ev.target.value})}/>
+      <label>Price:</label>
+      <input type="number" name="price" value={price} onChange={(ev) => setItem({...item, price: ev.target.value})}/>
+      <label>Category:</label>
+      <input type="text" name="category" value={category} onChange={(ev) => setItem({...item, category: ev.target.value})}/>
+      <label>Description:</label>
+      <textarea name="description" value={description} onChange={(ev) => setItem({...item, description: ev.target.value})}/>
+      <label>Image URL:</label>
+      <input type="text" name="image" value={image} onChange={(ev) => setItem({...item, image: ev.target.value})}/>
+      <span className='options-container'>
+        <button type="submit">Submit</button>
+        <button onClick={() => cancelFunction(false)}>Cancel</button>
+      </span>
+    </form>
+  </div>
 }
+	
