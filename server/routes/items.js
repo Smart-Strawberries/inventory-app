@@ -1,9 +1,8 @@
 const express = require("express");
-const models = require("../models");
 const router = express.Router();
 const { Item } = require("../models");
 
-
+// GET /items
 router.get("/", async (req, res, next) => {
   try {
     const items = await Item.findAll();
@@ -13,39 +12,56 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
-    res.json(await Item.findByPk(req.params.id))
+// POST /items
+router.post("/", async (req, res, next) => {
+  try {
+    const item = await Item.create(req.body);
+    res.send(item);
+  } catch (error) {
+    next(error);
+  }
 });
 
-
-// Post
-router.post('/items/:id',async (req, res) => {
-  await Item.create(req.body, {
-      where: {id: req.params.id}
-  });
-  res.send('Item created!');
+// DELETE /items/:id
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const success = await Item.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+    if(success) {
+      res.send('successfully deleted item' + req.params.id);
+    } else {
+      next({message: 'error deleting item ' + req.params.id});
+    }
+  } catch (error) {
+    next(error);
+  }
 });
 
-
-
-// Update 
-router.put('/items/:id',async (req, res) => {
-  await Item.update(req.body, {
-      where: {id: req.params.id}
-  });
-  res.send('Updated Items!');
+// PUT /items/:id
+router.put("/:id", async (req, res, next) => {
+  try {
+    const [_, success] = await Item.update(
+      req.body
+      ,
+      {
+        where: {
+          id: req.params.id,
+        },
+        returning: true
+      }
+    );
+    
+    if(success) {
+      res.send('successfully edited item' + req.params.id);
+    } else {
+      next({message: 'error editing item ' + req.params.id});
+    }
+  } catch (error) {
+    next(error);
+  }
 });
-
- // delete
- router.delete('/items/:id', async(req,res)=>{
-  await Item.destroy({
-      where: {id: req.params.id}
-  });
-  res.send('Deleted!')
-})
-
-
-
-
 
 module.exports = router;

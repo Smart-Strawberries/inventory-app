@@ -1,45 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import {ItemSingle} from './ItemSingle';
 import { ItemsList } from './ItemsList';
-import { Item } from './Item';
-import SingleItem from './singleItem'
-import Form, {Collection, Input, useForm} from 'usetheform'
-import {Cart} from './Cart'
+
 
 
 // import and prepend the api url to any fetch calls
 import apiURL from '../api';
+import { ItemAdd } from './ItemAdd';
 
 export const App = () => {
 
-	const [items, setItems, setCartItem] = useState([]);
-    const [singleItem, setSingleItem] = useState(0);
-
-	const onRemoveItem = (idToRemove) =>
-		setCartItem((prev) => prev.filter(({id}) => id !== idToRemove))
-
-	const onAddItem = () => {
-		const item = createRandomItem();
-		setCartItem((prev) => [...prev, item])
-	}
-
-	const Reset = props => {
-		const { reset, pristine } = useForm();
-		return (
-			<button disabled={pristine} type="button" onClick={reset}>
-				Reset
-			</button>
-		);
-	}
-
-	const onChange = (state, isFormValid) => console.log('CHANGE', state, isFormValid)
-
-	const onSubmit= (state) => console.log('SUBMIT', state)
+	const [items, setItems] = useState([]);
+	const [selectedItem, setSelectedItem] = useState(null);
+	const [isAddingItem, setIsAddingItem] = useState(false);
 
 	async function fetchItems(){
 		try {
 			const response = await fetch(`${apiURL}/items`);
 			const itemsData = await response.json();
-
+			
 			setItems(itemsData);
 		} catch (err) {
 			console.log("Oh no an error! ", err)
@@ -48,43 +27,19 @@ export const App = () => {
 
 	useEffect(() => {
 		fetchItems();
-	}, [singleItem]);
-
+	}, []);
 
 	return (
-		<div className="main">
-			<h1>Phone Store</h1>
-			<h2 >All things 🔥</h2>
-			<div className="App">
-				<Form onChange={onChange} onSubmit={onSubmit}>
-					<Cart items={items} onRemoveItem={onRemoveItem}/>
-					<button type="submit">Remove Item</button>
-				</Form>
-				<br/>
-				<button type="button" onClick={onAddItem}>Add item to cart</button>
-			</div>
-			<ItemsList items={items} />
-
-			<Form onSubmit={state => alert(JSON.stringify(state))}>
-				<Collection object name="user">
-					<Input type="text" name="name" placeholder="Your Name" />
-					<Input type="text" name="email" placeholder="Your Email" />
-				</Collection>
-				<button type="submit" onClick={{onAddItem}}>Submit</button>
-				<Reset />
-			</Form>
-		</div>
+		<main>	
+      <h1>Phones Store</h1>
+			<h2>With Discount</h2>
+			<button className={isAddingItem ? 'btn-danger' : ''} onClick={() => setIsAddingItem(!isAddingItem)}>{isAddingItem ? 'Cancel' : 'Add Item'}</button>
+			{ isAddingItem && <ItemAdd setIsAddingItem={setIsAddingItem} fetchItems={fetchItems} /> }
+			{
+				selectedItem
+					? <ItemSingle item={selectedItem} setSelectedItem={setSelectedItem} fetchItems={fetchItems}/>
+					: <ItemsList items={items} setSelectedItem={setSelectedItem} />
+			}
+		</main>
 	)
-}
-let id = 0;
-const createRandomItem = () => {
-	id = id + 1
-	return {
-		id,
-		qty: 1,
-		description: `Item number: ${id}`,
-		price: Number((Math.random() * 10 + 1).toFixed(2))
-	}
-
-
 }

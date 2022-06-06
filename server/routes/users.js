@@ -17,14 +17,30 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res) => {
   res.json(await User.findByPk(req.params.id))
 });
-// router.delete('/user/:id', async (req, res) => {
-// 	await User.destroy(req.body, {
-// 		where : {id : req.params.id},
+
+router.post("/", async (req, res, next) => {
+  try {
+    const [user, wasCreated] = await User.findOrCreate({
+      where: {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        password: req.body.password,
+        email: req.body.email
+      }
+    });
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+});
+router.delete('/user/:id', async (req, res) => {
+	await User.destroy(req.body, {
+		where : {id : req.params.id},
 		
 
-// 	});
-// 	res.send('deleted!!')
-// })
+	});
+	res.send('deleted!!')
+})
 
 
 
