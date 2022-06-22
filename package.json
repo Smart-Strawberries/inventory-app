@@ -9,6 +9,7 @@
     "start": "parcel build public/index.html && npm run seed && node server.js"
   },
   "dependencies": {
+    "@ant-design/react-native": "^5.0.0",
     "@babel/preset-env": "^7.15.0",
     "@babel/preset-react": "^7.14.5",
     "@types/react": "^18.0.12",
@@ -29,9 +30,8 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "react-test-renderer":"17.0.2",
     "babel-jest": "^27.1.0",
-    "jest": "^27.1.0"
-    
+    "jest": "^27.1.0",
+    "react-test-renderer": "17.0.2"
   }
 }
