@@ -22,7 +22,7 @@
     "nodemon": "^2.0.16",
     "parcel-bundler": "^1.12.5",
     "phones": "^2.0.1",
-    "react": "^18.1.0",
+    "react": "17.1.0",
     "react-bootstrap": "^2.4.0",
     "react-dom": "^18.1.0",
     "sequelize": "^6.6.5",
